@@ -3,7 +3,8 @@
 # Follow a file like tail -f.
 
 import time
-import csv
+import pandas as pd
+from io import StringIO
 
 # create generator that yields line
 # generators can be iterated through only once 
@@ -22,4 +23,10 @@ if __name__ == '__main__':
     # for loop runs the generator code in every iteration
     # once it reaches yield, it returns the line
     for line in loglines:
-        print(len(list(csv.reader([line]))[0]))
+        line = line.split('$') 
+        # line contains data separated with $
+        # the number of columns is 13
+        # however some dataframes will show len < 13 because the data is written incompletely by tshark
+        # every few seconds 1 dataframe will be dropped
+        if len(line) == 13:
+            print(pd.DataFrame([line]))
