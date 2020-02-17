@@ -3,7 +3,7 @@ import sklearn
 import time
 import pandas as pd
 
-filename = 'model.txt'
+filename = 'model2.txt'
 infile = open(filename,'rb')
 rf_model = pickle.load(infile)
 
@@ -88,6 +88,6 @@ for line in loglines:
 
         ip_df = pd.DataFrame([line[1:]])
         prediction = rf_model.predict(ip_df)[0]
-        if prediction == 3:
-            print (prediction)
+        if prediction != 0:
+            print ('attack: ' + str(prediction))
 
