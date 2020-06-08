@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,11 +11,12 @@
     <!-- NEEDS INTERNET BECAUSE IT USES CDN -->
     <!-- NEEDS INTERNET BECAUSE IT USES CDN -->
     <!-- NEEDS INTERNET BECAUSE IT USES CDN -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
 </head>
+
 <body>
     <pre id="test"></pre>
-
+    <pre id="smoothdata"></pre>
 
     <script>
         // readTextFile('http://localhost/ids/getData.php');
@@ -38,20 +40,53 @@
         //     }
         // }
 
-        $(document).ready(function(){
+        // buffer that contains 10 current values
+        var movingAvg = [];
+        var smoothingWindow = 10; // buffer size / smoothing window
+
+        // call to ajax request
+        $(document).ready(function () {
             jqueryAjax();
             setInterval(jqueryAjax, 1000); // to resend requests
         });
 
-        function jqueryAjax () {
-            $.ajax('http://localhost/ids/getData.php',{
-                success: function(data) {
+        // ajax request that will call the get data php code
+        function jqueryAjax() {
+            $.ajax('http://localhost/ids/getData.php', {
+                success: function (data) {
                     console.log(data);
                     document.getElementById('test').innerHTML = data;
+                    // get smoother data, pass curr data and the smoothing window, then display in html
+                    smoothedData = getMovingAvg(data, smoothingWindow);
+                    document.getElementById('smoothdata').innerHTML = 'smoothed data: ' + smoothedData;
                 }
             });
         }
-        
+
+        function getMovingAvg(data, smoothingWindow) {
+            // splitting because data here is not a single number but numbers on separate lines
+            data = data.split('\n');
+            data = Number(data[0]);
+            console.log('data', data, 'type of data ', typeof data, 'smoothingWindow', smoothingWindow);
+            // append to array
+            movingAvg.push(data)
+            if (movingAvg.length >= smoothingWindow) {
+                // removes first value if length reaches smoothing window (eg 10)
+                movingAvg.shift();
+            }
+            // get sum
+            var tempAvg = 0;
+            console.log('tempAvg: ' + tempAvg + ' movingAvg ', movingAvg);
+            movingAvg.forEach(element => {
+                tempAvg += element;
+            });
+            // get average
+            tempAvg /= movingAvg.length;
+            console.log('tempAvg: ' + tempAvg);
+            return tempAvg;
+        }
+
     </script>
 </body>
+
 </html>
