@@ -1,0 +1,24 @@
+import React from "react";
+import $ from "jquery";
+import { connect } from "react-redux";
+import Imgg from "../containers/imagg";
+
+
+class TestClass extends React.Component {
+
+   
+    render() {
+
+        return (
+       
+            <div>
+                <Imgg />
+            </div>
+
+
+        );
+    }
+}
+
+export default connect(
+)(TestClass);
