@@ -1,0 +1,37 @@
+If more than four authors are there, then use et. al., with 2 author names. Use name of the author followed by initials. Follow the exact format, names followed by comma, title within quotes, Journal name, volume number,  issue number, Year and then page number.
+
+[1]	Amelung F., Dixon T. H., Ferretti A., and Novali F., “Subsidence in New Orleans measured with permanent scatterer interferometry,” Geological Society of America Abstracts with Programs, vol. 38, no. 7, 2006, pp. 290-291.
+
+------------------------------------------------------------------------------------
+
+[1] Jesus P., Salim H., "IoT Security Framework for Smart Cyber Infrastructures", IEEE 1st International Workshops on Foundations and Applications of Self* Systems, 2016, pp. 242-247
+
+[2] Wikipedia, "Internet of things", https://en.wikipedia.org/wiki/Internet_of_things#cite_note-Linux_Things-1
+
+[3] Statista, "Internet of Things (IoT) connected devices installed base worldwide from 2015 to 2025 (in billions)", https://www.statista.com/statistics/471264/iot-number-of-connected-devices-worldwide/
+
+[4] Shadi A., Monther A., Muneer B. Y., "Anomaly-based intrusion detection system through feature selection analysis and building hybrid efficient model", Journal of Computational Science, 25, 2018, 152-160
+
+[5] Ebelechukwu N., Andre C., Gedare B., "Anomaly-based Intrusion Detection of IoT Device Sensor Data using Provenance Graphs", 1st International Workshop on Security and Privacy for the Internet-of-Things (IoTSec), 2018
+
+[6] Margaret R., "intrusion detection system (IDS)", https://searchsecurity.techtarget.com/definition/intrusion-detection-system, 2018
+
+[7] Dorothy E. D., "An Intrusion-Detection Model", IEEE Transactions on software engineering, vol SE-13, No. 2, 1987, 222-232
+
+[8] John P., "The Evolution of Intrusion Detection/Prevention: Then, Now and the Future", https://www.secureworks.com/blog/the-evolution-of-intrusion-detection-prevention, 2017
+
+[9] Minhaj A. K., Khaled S., "IoT security: Review, blockchain solutions, and open challenges", Future Generation Computer Systems, 82, 395-411
+
+[10] Ashima C., Brian L., Sheila F., Paul J., "Host based Intrusion Detection System with Combined CNN/RNN Model", IWAISe 2018- ECML PKDD Conference, 2018
+
+[11] Ke W., Salvatore J. S., "Anomalous Payload-Based Network Intrusion Detection", Recent advances in intrusion detection: 7th international symposium, vol. 3224, 2004, pp 203-222
+
+[12] Shadi A. A., Radhakrishna V., "GARUDA: Gaussian dissimilarity measure for feature representation and anomaly detection in Internet of things", The Journal of Supercomputing, 2018, pp 1-38
+
+[13] Abebe A. Diro., Naveen C., "Distributed attack detection scheme using deep learning approach for Internet of Things", Future Generation Computer Systems, 82, 2017, 761-768
+
+[14] Bayu A. T., Kyung-Hyune R., "An Integration of PSO-based Feature Selection and Random Forest for Anomaly Detection in IoT Network", MATEC Web of Conferences, vol 159, 2018
+
+[15] TagyAldeen M., Takanobu O., Takayuki I., "Towards Machine Learning Based IoT Intrusion Detection Service", Recent Trends and Future technology in Applied Intellignece, 2018, 580-585
+
+

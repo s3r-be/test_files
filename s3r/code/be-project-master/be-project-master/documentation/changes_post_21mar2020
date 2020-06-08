@@ -1,0 +1,22 @@
+Changes post 21 March 2020:
+
+
+
+
+21 mar 2020 -------------------------------------------------------------------------
+- created single instance of web socket "chatSocket" in index.js
+- passing it to network.js through props
+- flow
+	index.js > App.js > routes.js > NetworkLog.js
+
+22 mar 2020 -------------------------------------------------------------------------
+- added second web socket for attack notification (attackNotif)
+- created it in index.js and passing it to layout.js
+- flow 
+	index.js > App.js > Layout.js
+- added basic notification react-notifications-component
+- imported it in index, call notification by adding notification in store
+
+23 mar 2020  -------------------------------------------------------------------------
+- add notifications page, add cards with notification content, test, connect tshark backend, test
+- add db connection
