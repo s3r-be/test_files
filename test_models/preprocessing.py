@@ -27,20 +27,25 @@ class Preprocessing(Cleaning):
     mitmDict = {}
 
     def __init__(self):
-        super(Preprocessing, self).__init__()
+        try:
+            super(Preprocessing, self).__init__()
 
-        self.colLength = len(self.df['frame.number'])
-        self.new_columns()
-        self.wrong_setup_dtp()
-        self.ddos()
-        self.scan()
-        self.mitm()
+            self.colLength = len(self.df['frame.number'])
+            self.new_columns()
+            self.wrong_setup_dtp()
+            self.ddos()
+            self.scan()
+            self.mitm()
 
-        print('ddosDict', self.ddosDict)
-        print('scanDict', self.scanDict) 
-        print('mitmDict', self.mitmDict)
-        print('attack frequency in dataset - ')
-        [print('{0:25}'.format(self.attack_type[key]), value) for (key, value) in sorted(self.assignedAttacks.items())]
+            print('ddosDict', self.ddosDict)
+            print('scanDict', self.scanDict) 
+            print('mitmDict', self.mitmDict)
+            print('attack frequency in dataset - ')
+            [print('{0:25}'.format(self.attack_type[key]), value) for (key, value) in sorted(self.assignedAttacks.items())]
+
+            print('[DONE] preprocessing initialisation')
+        except:
+            print('[FAIL] preprocessing initialisation')
 
         
 
@@ -152,12 +157,31 @@ class Preprocessing(Cleaning):
                     value = -5
                     self.df.loc[ind, 'info'] = value
                     self.assignedAttacks[5] += 1
+                    self.df.loc[ind, 'normality'] = 5
             print('[DONE] set correct info and normality codes - MITM')
         except:
             print('[FAIL] set correct info and normality codes - MITM')
+    
+    def create_csv_post_preprocessing_with_info(self):
+        try:
+            self.df.to_csv('post_preprocessing_with_info_' + self.CSV_FILE)
+            print('[DONE] create post_preprocessing_with_info_' + self.CSV_FILE)
+        except:
+            print('[FAIL] create post_preprocessing_with_info_' + self.CSV_FILE)
+    
+    def create_csv_post_preprocessing_concise(self):
+        try:
+            concise_df = self.df.drop(['frame.number', '_ws.col.Info'], axis=1)
+            concise_df.to_csv('post_preprocessing_concise_' + self.CSV_FILE)
+            print('[DONE] create post_preprocessing_concise_' + self.CSV_FILE)
+        except:
+            print('[FAIL] create post_preprocessing_concise_' + self.CSV_FILE)
                 
 
 
 if __name__ == '__main__':
     oPreprocessing = Preprocessing()
     oPreprocessing.test()
+    # oPreprocessing.create_csv_post_preprocessing_with_info()
+    # oPreprocessing.create_csv_post_cleaning()
+    oPreprocessing.create_csv_post_preprocessing_concise()

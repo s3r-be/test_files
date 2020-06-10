@@ -5,14 +5,22 @@ import numpy as np
 
 class Cleaning:
 
-    def __init__(self, CSV_FILE='tshark_1_2_125000.csv'):
+    CSV_FILE='tshark_1_2_125000.csv'
+
+    def __init__(self):
+        file_name = input('[PRESS ENTER TO CHOOSE DEFAULT] - enter name if u have different DATASET csv file, make sure it\'s in the same directory. - ')
+        if len(file_name) < 1:
+            pass
+        else:
+            self.CSV_FILE = file_name
+
         try:
             # read csv file, fill nan with 0
-            self.df = pd.read_csv(CSV_FILE, sep='$')
+            self.df = pd.read_csv(self.CSV_FILE, sep='$')
             self.df.fillna(0, inplace=True)
-            print('[DONE] read csv file, fill nan with 0')
+            print('[DONE] read csv file ' + self.CSV_FILE + ', fill nan with 0')
         except:
-            print('[FAIL] read csv file, fill nan with 0')
+            print('[FAIL] read csv file ' + self.CSV_FILE + ', fill nan with 0')
 
         try:
             # get only time, remove ':', '.', convert to int
@@ -57,11 +65,25 @@ class Cleaning:
 
 
     def test(self):
-        print(self.df.head())
-        print(self.df.describe())
-        print(self.df.dtypes)
-        print(self.df.isnull().sum())
+        try:
+            print(self.df.head())
+            print(self.df.describe())
+            print(self.df.dtypes)
+            print(self.df.isnull().sum())
+
+            print('[DONE] print dataframe description')
+        except:
+            print('[FAIL] print dataframe description')
+    
+    def create_csv_post_cleaning(self):
+        try:
+            self.df.to_csv('post_cleaning_' + self.CSV_FILE)
+            print('[DONE] create post_cleaning_' + self.CSV_FILE)
+        except:
+            print('[FAIL] create post_cleaning_' + self.CSV_FILE)
+
 
 if __name__ == '__main__':
     oCleaning = Cleaning()
     oCleaning.test()
+    oCleaning.create_csv_post_cleaning()
