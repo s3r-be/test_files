@@ -4,7 +4,8 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from preprocessing import Preprocessing
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import precision_score, recall_score, confusion_matrix, classification_report, accuracy_score
+import traceback
 
 class BasicModelCreation(Preprocessing):
 
@@ -18,9 +19,14 @@ class BasicModelCreation(Preprocessing):
             if len(csv_file) < 1:
                 try:
                     self.pre_processed_df = pd.read_csv(self.pre_processed_CSV_FILE)
+                    start_from_scratch = input(self.pre_processed_CSV_FILE + ' already exists. Press ENTER to continue, else ENTER any key to start from scratch.')
+                    if len(start_from_scratch) < 1:
+                        pass
+                    else:
+                        invoke_except_block = 1/0
+                        invoke_except_block += 1
                     print('[INFO] ' + self.pre_processed_CSV_FILE + ' already exists, using that.')
                 except:
-                    print('[INFO] creating model from scratch.')
                     super(BasicModelCreation, self).__init__()
                     concise_df = self.df.drop(['frame.number', '_ws.col.Info'], axis=1)
                     self.pre_processed_df = concise_df
@@ -41,8 +47,11 @@ class BasicModelCreation(Preprocessing):
         try:
             self.train_test_split()
             self.create_model()
+            self.tree_stats()
             self.training_predictions()
             self.testing_predictions()
+            self.evaluate_model(self.test_rf_predictions, self.test_rf_probs, self.train_rf_predictions, self.train_rf_probs)
+            self.feature_importance()
             print('[DONE] basic_model_creation further processes.')
         except:
             print('[FAIL] basic_model_creation further processes.')
@@ -97,13 +106,30 @@ class BasicModelCreation(Preprocessing):
             print('[DONE] create model')
         except Exception as e:
             print('[FAIL] create model - ', e)
+
+    def tree_stats(self):
+        try:
+            n_nodes = []
+            max_depths = []
+
+            # Stats about the trees in random forest
+            for ind_tree in self.model.estimators_:
+                n_nodes.append(ind_tree.tree_.node_count)
+                max_depths.append(ind_tree.tree_.max_depth)
+            
+            print(f'Average number of nodes {int(np.mean(n_nodes))}')
+            print(f'Average maximum depth {int(np.mean(max_depths))}')
+            
+            print('[DONE] tree stats')
+        except:
+            print('[FAIL] tree stats')
     
     def training_predictions(self):
         try:
             # Training predictions (to demonstrate overfitting)
-            train_rf_predictions = self.model.predict(self.train)
-            # train_rf_probs = self.model.predict_proba(self.train)[:, 1]
-            print('Accuracy on training data - ' + str(accuracy_score(self.train_labels, train_rf_predictions)))
+            self.train_rf_predictions = self.model.predict(self.train)
+            self.train_rf_probs = self.model.predict_proba(self.train)[:, 1]
+            print('Accuracy on training data - ' + str(accuracy_score(self.train_labels, self.train_rf_predictions)))
 
             print('[DONE] training predictions')
         except:
@@ -113,13 +139,57 @@ class BasicModelCreation(Preprocessing):
     def testing_predictions(self):
         try:
             # Testing predictions (to determine performance)
-            test_rf_predictions = self.model.predict(self.test)
-            # test_rf_probs = self.model.predict_proba(self.test)[:, 1]
-            print('Accuracy on testing data - ' + str(accuracy_score(self.test_labels, test_rf_predictions)))
+            self.test_rf_predictions = self.model.predict(self.test)
+            self.test_rf_probs = self.model.predict_proba(self.test)[:, 1]
+            print('Accuracy on testing data - ' + str(accuracy_score(self.test_labels, self.test_rf_predictions)))
 
             print('[DONE] testing predictions')
         except:
             print('[FAIL] testing predictions')
+                
+
+    def evaluate_model(self, predictions, probs, train_predictions, train_probs):
+        try:
+            # Print the confusion matrix
+            print('---------------------------------------------------------------')
+            print('confusion matrix - for test data')
+            print('---------------------------------------------------------------')
+            print(confusion_matrix(self.test_labels, self.test_rf_predictions))
+
+            print('---------------------------------------------------------------')
+            print('confusion matrix - for train data')
+            print('---------------------------------------------------------------')
+            print(confusion_matrix(self.train_labels, self.train_rf_predictions))
+
+            # Print the precision and recall, among other metrics
+            print('---------------------------------------------------------------')
+            print('classification report - for test data')
+            print('---------------------------------------------------------------')
+            print(classification_report(self.test_labels, self.test_rf_predictions, digits=3))
+
+            print('---------------------------------------------------------------')
+            print('classification report - for train data')
+            print('---------------------------------------------------------------')
+            print(classification_report(self.train_labels, self.train_rf_predictions, digits=3))
+
+            print('[DONE] model evaluation')
+        except Exception as e:
+            print('[FAIL] model evaluation - ', e)
+            print(traceback.format_exc())
+    
+    def feature_importance(self):
+        try:
+            # Extract feature importances
+            fi = pd.DataFrame({'feature': list(self.train.columns),
+                            'importance': self.model.feature_importances_}).\
+                                sort_values('importance', ascending = False)
+
+            # Display
+            print(fi.head(12))
+
+            print('[DONE] feature importance')
+        except:
+            print('[FAIL] feature importance')
 
 
 if __name__ == '__main__':
