@@ -6,6 +6,8 @@ from sklearn.ensemble import RandomForestClassifier
 from preprocessing import Preprocessing
 from sklearn.metrics import precision_score, recall_score, confusion_matrix, classification_report, accuracy_score
 import traceback
+import pickle
+import os
 
 class BasicModelCreation(Preprocessing):
 
@@ -190,9 +192,30 @@ class BasicModelCreation(Preprocessing):
             print('[DONE] feature importance')
         except:
             print('[FAIL] feature importance')
+    
+    def create_model_pickle(self):
+        try:
+            filename = 'model'
+            
+            # create unique model name that doesn't exist in current directory
+            if os.path.isfile(filename):
+                version = 1
+                filename = 'model_1'
+                while os.path.isfile(filename):
+                    version += 1
+                    filename = filename.split('_')[0] + str(version)
+
+            outfile = open(filename,'wb')
+            pickle.dump(self.model, outfile)
+            outfile.close()
+        
+            print('[DONE] pickle of model created - ' + filename)
+        except:
+            print('[FAIL] pickle of model created - ' + filename)
 
 
 if __name__ == '__main__':
     oBasicModelCreation = BasicModelCreation()
     oBasicModelCreation.create_csv_post_preprocessing_concise()
+    oBasicModelCreation.create_model_pickle()
     # oBasicModelCreation.create_csv_post_preprocessing_with_info()
